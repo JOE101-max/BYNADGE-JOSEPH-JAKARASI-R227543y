@@ -1,5 +1,3 @@
-# ABSTRACTIVE SUMMARIZATION
-
 print("Initializing Summarizer (distilbart)...")
 summarizer = pipeline("summarization", model="sshleifer/distilbart-cnn-12-6", device=device)
 
@@ -20,13 +18,12 @@ for i, chunk in enumerate(selected_chunks):
         print("Time limit approaching, stopping chunk summary early.")
         break
     try:
-        # Adjusted max_length slightly to avoid warnings on smaller chunks
+        # Adjusted max_length slightly to minimize pipeline warnings
         res = summarizer(chunk[:3500], max_length=120, min_length=40, do_sample=False, truncation=True)
         raw_summaries.append(res[0]['summary_text'])
     except Exception:
         continue
 
-# Create the Master Text derived from all chunks
 master_summary_text = " ".join(raw_summaries)
 
 # Generate Specific Sections
