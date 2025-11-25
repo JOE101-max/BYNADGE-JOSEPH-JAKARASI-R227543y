@@ -1,24 +1,21 @@
-
-#  SAVE STRUCTURED WORD DOC
-
 print("Writing Word Document...")
 doc = Document()
 doc.add_heading('Deep Learning Analysis Report (High Quality)', 0)
 
-# --- 1. Executive Summary ---
+# 1. Executive Summary
 doc.add_heading('1. Executive Summary', 1)
 doc.add_paragraph(exec_summary)
 
-# --- 2. Insights ---
+# 2. Insights
 doc.add_heading('2. Insights', 1)
 doc.add_paragraph(insights_text)
 doc.add_paragraph(f"Model Coherence Score ($C_v$): {coherence_score}")
 
-# --- 3. Global Summary ---
+# 3. Global Summary
 doc.add_heading('3. Global Summary', 1)
 doc.add_paragraph(global_summary)
 
-# --- Appendix: Detailed Topic Breakdown ---
+# Appendix: Detailed Topic Breakdown
 doc.add_heading('Appendix: Detailed Topic Breakdown', 1)
 for index, row in clean_topics.iterrows():
     t_id = row['Topic']
@@ -37,4 +34,10 @@ doc.add_paragraph(f"Analysis time: {elapsed_min:.2f} minutes.")
 doc.add_paragraph(f"Documents analyzed: {len(documents)}")
 
 doc.save(OUTPUT_PATH)
-print(f"Finished. Saved to: {OUTPUT_PATH}")
+print(f"Successfully saved Word document to local storage: {OUTPUT_PATH}")
+
+# ================================
+# 9. DOWNLOAD FILE
+# ================================
+print("\nInitiating file download...")
+files.download(OUTPUT_PATH)
