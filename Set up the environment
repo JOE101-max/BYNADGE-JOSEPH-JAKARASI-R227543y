@@ -1,0 +1,32 @@
+From google.colab import drive
+mount.drive("/content/drive")
+
+
+
+PDF_FILE_PATH = "/content/drive/MyDrive/NLP/pdf_files/merged_document.pdf"
+OUTPUT_PATH = "/content/drive/MyDrive/NLP/Deep_Learning_Text_Report_V3.docx"
+#  CONFIGURATION 
+# --- Tuned for Max Quality (Coherence, Detail) & 25 Min Runtime ---
+MAX_DOCS = 2200              # Increased for better coherence & data coverage
+MAX_SUMMARY_CHUNKS = 50      # Increased for a more detailed Global Summary
+EMBED_BATCH = 64
+TOP_N_TOPICS_FOR_INSIGHTS = 8 # New: Use 8 topics for the Insights section
+MIN_CLUSTER_SIZE = 20        # Forces stable, high-coherence topics
+
+# Time Budget
+start_time = time.time()
+TARGET_MINUTES = 25
+MAX_SECONDS = TARGET_MINUTES * 60
+
+# Check GPU
+try:
+    import torch
+    device = 0 if torch.cuda.is_available() else -1
+except ImportError:
+    device = -1
+
+print(f"Device: {'GPU' if device == 0 else 'CPU'}")
+print(f"Target Runtime: {TARGET_MINUTES} minutes (Maximum Quality).")
+
+def time_ok():
+    return (time.time() - start_time) < MAX_SECONDS
