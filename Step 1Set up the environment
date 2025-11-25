@@ -13,3 +13,18 @@ except ImportError:
         def download(self, path):
             print(f"File saved locally at: {path}")
     files = FilesMock()
+#  IMPORTS
+
+import os, time, warnings
+import numpy as np
+from pdfminer.high_level import extract_text
+from bertopic import BERTopic
+from umap import UMAP
+from hdbscan import HDBSCAN
+from transformers import pipeline
+from sentence_transformers import SentenceTransformer
+from gensim.corpora.dictionary import Dictionary
+from gensim.models.coherencemodel import CoherenceModel
+from docx import Document
+
+warnings.filterwarnings("ignore")
