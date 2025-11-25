@@ -1,0 +1,57 @@
+# ABSTRACTIVE SUMMARIZATION
+
+print("Initializing Summarizer (distilbart)...")
+summarizer = pipeline("summarization", model="sshleifer/distilbart-cnn-12-6", device=device)
+
+print(f"Processing {MAX_SUMMARY_CHUNKS} text chunks for Global Summary...")
+
+chunk_size = 1500
+text_chunks = [full_text[i:i+chunk_size] for i in range(0, len(full_text), chunk_size)]
+
+if len(text_chunks) > MAX_SUMMARY_CHUNKS:
+    indices = np.linspace(0, len(text_chunks)-1, num=MAX_SUMMARY_CHUNKS, dtype=int)
+    selected_chunks = [text_chunks[i] for i in indices]
+else:
+    selected_chunks = text_chunks
+
+raw_summaries = []
+for i, chunk in enumerate(selected_chunks):
+    if not time_ok():
+        print("Time limit approaching, stopping chunk summary early.")
+        break
+    try:
+        # Adjusted max_length slightly to avoid warnings on smaller chunks
+        res = summarizer(chunk[:3500], max_length=120, min_length=40, do_sample=False, truncation=True)
+        raw_summaries.append(res[0]['summary_text'])
+    except Exception:
+        continue
+
+# Create the Master Text derived from all chunks
+master_summary_text = " ".join(raw_summaries)
+
+# Generate Specific Sections
+print("Drafting specific report sections...")
+
+# A. Global Summary (Significantly Larger)
+try:
+    global_summary = summarizer(
+        master_summary_text[:5000],
+        max_length=600,             # Target bigger output
+        min_length=250,             # Force multiple paragraphs
+        do_sample=False,
+        truncation=True
+    )[0]['summary_text']
+except:
+    global_summary = "Global summary generation failed."
+
+# B. Executive Summary (High Level)
+try:
+    exec_summary = summarizer(
+        global_summary[:1500],
+        max_length=180,
+        min_length=60,
+        do_sample=False,
+        truncation=True
+    )[0]['summary_text']
+except:
+    exec_summary = "Executive summary generation failed."
