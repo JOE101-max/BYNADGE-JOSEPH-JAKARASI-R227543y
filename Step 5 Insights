@@ -1,5 +1,4 @@
 #  "INSIGHTS"
-
 topic_info = topic_model.get_topic_info()
 clean_topics = topic_info[topic_info['Topic'] != -1]
 
