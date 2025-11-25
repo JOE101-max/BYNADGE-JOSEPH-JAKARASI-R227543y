@@ -1,5 +1,3 @@
-#  TEXT EXTRACTION
-
 if not os.path.exists(PDF_FILE_PATH):
     raise FileNotFoundError(f"PDF not found at {PDF_FILE_PATH}")
 
