@@ -1,0 +1,11 @@
+#  "INSIGHTS"
+
+topic_info = topic_model.get_topic_info()
+clean_topics = topic_info[topic_info['Topic'] != -1]
+
+insights_text = "Key structural insights based on dominant document themes:\n"
+# Using TOP_N_TOPICS_FOR_INSIGHTS (8) topics for a bigger section
+for i, row in clean_topics.head(TOP_N_TOPICS_FOR_INSIGHTS).iterrows():
+    t_id = row['Topic']
+    words = [w[0] for w in topic_model.get_topic(t_id)[:5]]
+    insights_text += f"- **Topic {t_id}**: Focuses on {' / '.join(words)}. This theme appears in {row['Count']} sections.\n"
