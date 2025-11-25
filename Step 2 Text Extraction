@@ -1,0 +1,20 @@
+#  TEXT EXTRACTION
+
+if not os.path.exists(PDF_FILE_PATH):
+    raise FileNotFoundError(f"PDF not found at {PDF_FILE_PATH}")
+
+print("Extracting text...")
+full_text = extract_text(PDF_FILE_PATH)
+
+# Refined filtering: Only keep paragraphs with substantial content (>40 words)
+documents = []
+for p in full_text.split("\n\n"):
+    clean_p = p.strip()
+    if len(clean_p.split()) > 40:
+        documents.append(clean_p)
+
+if len(documents) > MAX_DOCS:
+    documents = documents[:MAX_DOCS]
+    print(f"Truncated to {MAX_DOCS} sections.")
+else:
+    print(f"Loaded {len(documents)} high-quality sections.")
